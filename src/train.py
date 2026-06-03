@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import json
 
 from src.evaluate import evaluate
 
@@ -51,5 +52,10 @@ def train(model, train_loader, val_loader, class_weights, device, epochs=10, sav
             torch.save(model.state_dict(), save_path)
 
         print(f"Epoch {epoch+1}/{epochs} | Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f} | Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.4f}")
+
+    if save_path:
+        history_path = save_path.replace('.pth', '_history.json')
+        with open(history_path, 'w') as f:
+            json.dump(history, f, indent=2)
 
     return history
